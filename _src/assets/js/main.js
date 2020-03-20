@@ -2,14 +2,13 @@
 
 const inputSearch = document.querySelector('.js-input-search');
 const buttonSearch = document.querySelector('.js-button-search');
-//ul donde voy a pintar la lista de los resultados
-const resultsSearch = document.querySelector('.js-results-search');
 
 //Array para guardar resultados de la petición
 let seriesResult = [];
 
 
 
+buttonSearch.addEventListener('click', callSeriesResult);
 
 //Función para hacer peticiones al API
 function callSeriesResult(ev) {
@@ -21,40 +20,67 @@ function callSeriesResult(ev) {
   });
 }
 
-//Función para pintar resultados del API
+//Función para pintar listado de resultados de la búsqueda
 
-function paintSeries(seriesResult) {
-
+function paintSeries() {
+  const resultsContainer = document.querySelector('.js-results-search');
   for (const serie of seriesResult) {
-    const li = document.createElement('li');
-    const img = document.createElement('img');
-    const title = document.createElement('h3');
-
-    title.innerHTML = serie.show.name;
-    if (serie.show.image !== null) {
-      img.src = serie.show.image.medium;
-    } else {
-      img.src = 'https://via.placeholder.com/210x295/ffffff/666666/?';
-    }
-
-    li.classList.add('card', 'js-card');
-    li.appendChild(title);
-    li.appendChild(img);
-    resultsSearch.appendChild(li);
-    resultsSearch.classList.add('series-result');
-
-    //Seteo evento click
-    let cardlist = document.querySelectorAll('.js-card');
-    for (let card of cardlist) {
-      card.addEventListener('click', paintFavorites);
-    }
+    //La función paintSerie retorna un li, al al que a añado un listener
+    paintSerie(serie, resultsContainer).addEventListener('click', paintFavorites);
   }
 }
 
+//Función para pintar cada serie
+
+function paintSerie(serie, container) {
+  const li = document.createElement('li');
+  const img = document.createElement('img');
+  const title = document.createElement('h3');
+
+  title.innerHTML = serie.show.name;
+  if (serie.show.image !== null) {
+    img.src = serie.show.image.medium;
+  } else {
+    img.src = 'https://via.placeholder.com/210x295/ffffff/666666/?';
+  }
+
+  li.id = serie.show.id;
+  li.classList.add('card', 'js-card');
+  li.appendChild(title);
+  li.appendChild(img);
+  container.appendChild(li);
+  container.classList.add('series-result');
+  return li;
+}
+
+//Función para pintar favoritos
+
+
 function paintFavorites(ev) {
-  const favoriteElem = ev.currentTarget;
-  const favoritesSection = document.querySelector('.js-favorites');
-  favoritesSection.appendChild(favoriteElem);
+  //ul donde meto cada li que creo con la función paintSerie (devuelve un li)
+  const favoritesContainer = document.querySelector('.js-favorites');
+
+  //recoge el id de la serie añadida a favoritos (elemento clicado)
+  const id = ev.currentTarget.id;
+
+  const serie = findSerie(id, seriesResult);
+
+  paintSerie(serie, favoritesContainer).addEventListener('click', deleteFavorites);
+}
+
+function deleteFavorites(ev) {
+  const favoritesContainer = document.querySelector('.js-favorites');
+  favoritesContainer.removeChild(ev.currentTarget);
+}
+
+//Esta función sirve para encontrar la serie a través del id
+
+function findSerie(id, seriesResult) {
+  console.log(id);
+
+  //El id que devuelve es un string, por eso parseInt
+  id = parseInt(id);
+  return seriesResult.find(serie => serie.show.id === id);
 }
 
 
@@ -64,6 +90,3 @@ function paintFavorites(ev) {
 //   return favoritesArr;
 
 // }
-
-
-buttonSearch.addEventListener('click', callSeriesResult);
