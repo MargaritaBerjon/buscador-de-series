@@ -25,17 +25,17 @@ function callSeriesResult(ev) {
 function paintSeries() {
   const resultsContainer = document.querySelector('.js-results-search');
   for (const serie of seriesResult) {
-    //La función paintSerie retorna un li, al al que a añado un listener
+    //La función paintSerie retorna un li, al que a añado un listener
     paintSerie(serie, resultsContainer).addEventListener('click', paintFavorites);
   }
 }
 
-//Función para pintar cada serie
+//Función para pintar cada serie en los resultados de la petición al API. Cada serie está dentro de un li.
 
 function paintSerie(serie, container) {
   const li = document.createElement('li');
   const img = document.createElement('img');
-  const title = document.createElement('h3');
+  const title = document.createElement('p');
 
   title.innerHTML = serie.show.name;
   if (serie.show.image !== null) {
@@ -58,14 +58,19 @@ function paintSerie(serie, container) {
 
 function paintFavorites(ev) {
   //ul donde meto cada li que creo con la función paintSerie (devuelve un li)
-  const favoritesContainer = document.querySelector('.js-favorites');
+  const favoritesList = document.querySelector('.js-favorites');
+
 
   //recoge el id de la serie añadida a favoritos (elemento clicado)
   const id = ev.currentTarget.id;
 
   const serie = findSerie(id, seriesResult);
 
-  paintSerie(serie, favoritesContainer).addEventListener('click', deleteFavorites);
+  const favoriteCard = paintSerie(serie, favoritesList);
+  favoriteCard.addEventListener('click', deleteFavorites);
+  favoriteCard.classList.remove('card');
+  favoriteCard.classList.add('favorite-card');
+  // saveFavoriteSerie(serie);
 }
 
 function deleteFavorites(ev) {
