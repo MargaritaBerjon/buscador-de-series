@@ -5,10 +5,25 @@ const buttonSearch = document.querySelector('.js-button-search');
 
 //Array para guardar resultados de la petición
 let seriesResult = [];
+//Array para guardar favoritos
+let favoriteArr = [];
 
+getFavoritesFromLocalStorage();
 
+//Carga al iniciar la aplicación los favoritos (si los hay)
+function getFavoritesFromLocalStorage() {
+  const favoritesList = document.querySelector('.js-favorites');
+  if (JSON.parse(localStorage.getItem('favorites'))) {
+    favoriteArr = JSON.parse(localStorage.getItem('favorites'));
+    for (const serie of favoriteArr) {
+      const favoriteCard = paintSerie(serie, favoritesList);
+      favoriteCard.classList.remove('card');
+      favoriteCard.classList.add('favorite-card');
+      favoriteCard.addEventListener('click', deleteFavorites);
+    }
+  }
+}
 
-buttonSearch.addEventListener('click', callSeriesResult);
 
 //Función para hacer peticiones al API
 function callSeriesResult(ev) {
@@ -21,7 +36,6 @@ function callSeriesResult(ev) {
 }
 
 //Función para pintar listado de resultados de la búsqueda
-
 function paintSeries() {
   const resultsContainer = document.querySelector('.js-results-search');
   for (const serie of seriesResult) {
@@ -30,8 +44,7 @@ function paintSeries() {
   }
 }
 
-//Función para pintar cada serie en los resultados de la petición al API. Cada serie está dentro de un li.
-
+//Función para pintar una serie. (serie=> serie a pintar, container=> donde se pinta la serie) Cada serie está dentro de un li. 
 function paintSerie(serie, container) {
   const li = document.createElement('li');
   const img = document.createElement('img');
@@ -54,44 +67,53 @@ function paintSerie(serie, container) {
 }
 
 //Función para pintar favoritos
-
-
 function paintFavorites(ev) {
   //ul donde meto cada li que creo con la función paintSerie (devuelve un li)
   const favoritesList = document.querySelector('.js-favorites');
 
-
   //recoge el id de la serie añadida a favoritos (elemento clicado)
   const id = ev.currentTarget.id;
-
   const serie = findSerie(id, seriesResult);
+  ev.currentTarget.classList.remove('card');
+  ev.currentTarget.classList.add('card-result-favorite');
 
-  const favoriteCard = paintSerie(serie, favoritesList);
-  favoriteCard.addEventListener('click', deleteFavorites);
-  favoriteCard.classList.remove('card');
-  favoriteCard.classList.add('favorite-card');
-  // saveFavoriteSerie(serie);
+  if (findSerie(id, favoriteArr)) {
+    alert('SERIE YA ESTA EN FAVORITOS');
+  } else {
+    const favoriteCard = paintSerie(serie, favoritesList);
+    favoriteCard.classList.remove('card');
+    favoriteCard.classList.add('favorite-card');
+    favoriteCard.addEventListener('click', deleteFavorites);
+    saveFavoriteSerie(serie);
+  }
 }
+
 
 function deleteFavorites(ev) {
   const favoritesContainer = document.querySelector('.js-favorites');
+  const id = ev.currentTarget.id;
+
+  const serie = findSerie(id, favoriteArr);
+  favoriteArr.splice(favoriteArr.indexOf(serie));
+  localStorage.setItem('favorites', JSON.stringify(favoriteArr));
   favoritesContainer.removeChild(ev.currentTarget);
 }
 
+//Guarda los favoritos en: favoritesArr y LocalStorage
+function saveFavoriteSerie(serie) {
+  favoriteArr.push(serie);
+  localStorage.setItem('favorites', JSON.stringify(favoriteArr));
+}
+
+
+
 //Esta función sirve para encontrar la serie a través del id
-
 function findSerie(id, seriesResult) {
-  console.log(id);
-
   //El id que devuelve es un string, por eso parseInt
   id = parseInt(id);
   return seriesResult.find(serie => serie.show.id === id);
 }
 
 
-// function getFavoritesSeriesResult() {
-//   let favorites = localStorage.getItem('favorites') || '[]';
-//   const favoritesArr = JSON.parse(favorites);
-//   return favoritesArr;
+buttonSearch.addEventListener('click', callSeriesResult);
 
-// }
