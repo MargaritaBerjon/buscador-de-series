@@ -19,7 +19,12 @@ function getFavoritesFromLocalStorage() {
       const favoriteCard = paintSerie(serie, favoritesList);
       favoriteCard.classList.remove('card');
       favoriteCard.classList.add('favorite-card');
-      favoriteCard.addEventListener('click', deleteFavorites);
+      favoriteCard.querySelector('img').classList.add('img-favorite');
+      const iconDelete = document.createElement('button');
+      iconDelete.innerHTML = 'x';
+      favoriteCard.appendChild(iconDelete);
+      iconDelete.classList.add('icon-delete');
+      iconDelete.addEventListener('click', deleteFavorites);
     }
   }
 }
@@ -42,6 +47,7 @@ function paintSeries() {
     //La función paintSerie retorna un li, al que a añado un listener
     paintSerie(serie, resultsContainer).addEventListener('click', paintFavorites);
   }
+
 }
 
 //Función para pintar una serie. (serie=> serie a pintar, container=> donde se pinta la serie) Cada serie está dentro de un li. 
@@ -59,44 +65,53 @@ function paintSerie(serie, container) {
 
   li.id = serie.show.id;
   li.classList.add('card', 'js-card');
-  li.appendChild(title);
   li.appendChild(img);
+  li.appendChild(title);
   container.appendChild(li);
   container.classList.add('series-result');
   return li;
 }
 
-//Función para pintar favoritos
-function paintFavorites(ev) {
-  //ul donde meto cada li que creo con la función paintSerie (devuelve un li)
-  const favoritesList = document.querySelector('.js-favorites');
 
+function paintFavorites(ev) {
   //recoge el id de la serie añadida a favoritos (elemento clicado)
   const id = ev.currentTarget.id;
   const serie = findSerie(id, seriesResult);
-  ev.currentTarget.classList.remove('card');
-  ev.currentTarget.classList.add('card-result-favorite');
+
 
   if (findSerie(id, favoriteArr)) {
     alert('SERIE YA ESTA EN FAVORITOS');
   } else {
+    ev.currentTarget.classList.remove('card');
+    ev.currentTarget.classList.add('card-result-favorite');
+
+    //ul donde meto cada li que creo con la función paintSerie (devuelve un li)
+    const favoritesList = document.querySelector('.js-favorites');
+    const iconDelete = document.createElement('button');
+    iconDelete.innerHTML = 'x';
+    iconDelete.classList.add('icon-delete');
     const favoriteCard = paintSerie(serie, favoritesList);
+    favoriteCard.appendChild(iconDelete);
     favoriteCard.classList.remove('card');
     favoriteCard.classList.add('favorite-card');
-    favoriteCard.addEventListener('click', deleteFavorites);
+    favoriteCard.querySelector('img').classList.add('img-favorite');
+    iconDelete.addEventListener('click', deleteFavorites);
+
     saveFavoriteSerie(serie);
   }
+
+
 }
 
 
 function deleteFavorites(ev) {
   const favoritesContainer = document.querySelector('.js-favorites');
-  const id = ev.currentTarget.id;
+  const id = ev.currentTarget.parentElement.id;
 
   const serie = findSerie(id, favoriteArr);
   favoriteArr.splice(favoriteArr.indexOf(serie));
   localStorage.setItem('favorites', JSON.stringify(favoriteArr));
-  favoritesContainer.removeChild(ev.currentTarget);
+  favoritesContainer.removeChild(ev.currentTarget.parentElement);
 }
 
 //Guarda los favoritos en: favoritesArr y LocalStorage
@@ -113,6 +128,30 @@ function findSerie(id, seriesResult) {
   id = parseInt(id);
   return seriesResult.find(serie => serie.show.id === id);
 }
+
+function createButtonRemove() {
+  const favoriteSection = document.querySelector('.js-favorite-container');
+  if (favoriteSection) {
+    const removeAllfavorites = document.createElement('button');
+    removeAllfavorites.innerHTML = 'Borrar favoritos';
+    removeAllfavorites.classList.add('delete-all-favorites');
+    favoriteSection.appendChild(removeAllfavorites);
+    const buttonRemove = document.querySelector('.delete-all-favorites');
+    buttonRemove.addEventListener('click', removeAllFavorites);
+
+  }
+}
+createButtonRemove();
+
+function removeAllFavorites() {
+  const favoritesContainer = document.querySelector('.js-favorites');
+  favoriteArr = [];
+  favoritesContainer.innerHTML = '';
+  localStorage.removeItem('favorites');
+
+  console.log(favoriteArr);
+}
+
 
 
 buttonSearch.addEventListener('click', callSeriesResult);

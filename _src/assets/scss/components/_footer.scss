@@ -1,7 +1,8 @@
 .page__footer {
   left: 0;
   bottom: 0;
-  width: 100vw;
+  display: flex;
+  align-items: flex-end;
   padding: 1rem;
   color: $color-secondary;
 }

@@ -3,6 +3,23 @@
   justify-content: space-between;
 }
 
+.input-search {
+  border: 0;
+  outline: none;
+  background-color: rgba(124, 99, 99, 0.116);
+  padding: 0.5rem;
+  border-radius: 10px;
+  font-size: 15px;
+  margin-left: 1rem;
+}
+.button-search {
+  padding: 0.5rem;
+  border-radius: 10px;
+  background-color: #f18867;
+  color: white;
+  font-size: 15px;
+}
+
 .series-result {
   display: flex;
   flex-wrap: wrap;
@@ -11,7 +28,7 @@
 }
 
 .card {
-  background-color: rgb(170, 207, 193);
+  background-color: #50bda1;
   border-radius: 2%;
   margin-bottom: 1rem;
   padding: 1rem;
@@ -21,7 +38,7 @@
   margin: 0.5rem;
 }
 .card-result-favorite {
-  background-color: blue;
+  background-color: #e85f99;
   font-family: fantasy;
   border-radius: 2%;
   margin-bottom: 1rem;
@@ -35,12 +52,34 @@
   display: flex;
   flex-direction: column;
   margin-top: 0.5rem;
+  margin-left: 1rem;
 }
 
 .favorite-card {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   align-items: center;
-  border-radius: 2%;
   margin-bottom: 1rem;
+}
+.img-favorite {
+  width: 100px;
+  margin-right: 1rem;
+}
+
+.icon-delete {
+  border-radius: 25px;
+  padding: 0.5rem;
+  background-color: #f18867;
+  color: white;
+  margin-left: 1rem;
+  font-weight: bold;
+}
+
+.delete-all-favorites {
+  padding: 1rem;
+  border-radius: 50px;
+  background-color: #f18867;
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
 }
