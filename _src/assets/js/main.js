@@ -17,6 +17,7 @@ function getFavoritesFromLocalStorage() {
     favoriteArr = JSON.parse(localStorage.getItem('favorites'));
     for (const serie of favoriteArr) {
       const favoriteCard = paintSerie(serie, favoritesList);
+      favoritesList.classList.remove('series-result');
       favoriteCard.classList.remove('card');
       favoriteCard.classList.add('favorite-card');
       favoriteCard.querySelector('img').classList.add('img-favorite');
@@ -50,7 +51,7 @@ function paintSeries() {
 
 }
 
-//Función para pintar una serie. (serie=> serie a pintar, container=> donde se pinta la serie) Cada serie está dentro de un li. 
+//Función para pintar una serie. (serie=> serie a pintar, container=> donde se pinta la serie) Cada serie está dentro de un li.
 function paintSerie(serie, container) {
   const li = document.createElement('li');
   const img = document.createElement('img');
@@ -87,6 +88,7 @@ function paintFavorites(ev) {
 
     //ul donde meto cada li que creo con la función paintSerie (devuelve un li)
     const favoritesList = document.querySelector('.js-favorites');
+    favoritesList.classList.remove('series-result');
     const iconDelete = document.createElement('button');
     iconDelete.innerHTML = 'x';
     iconDelete.classList.add('icon-delete');
@@ -148,11 +150,7 @@ function removeAllFavorites() {
   favoriteArr = [];
   favoritesContainer.innerHTML = '';
   localStorage.removeItem('favorites');
-
-  console.log(favoriteArr);
 }
-
-
 
 buttonSearch.addEventListener('click', callSeriesResult);
 
