@@ -44,6 +44,7 @@ function callSeriesResult(ev) {
 //Función para pintar listado de resultados de la búsqueda
 function paintSeries() {
   const resultsContainer = document.querySelector('.js-results-search');
+  resultsContainer.innerHTML = '';
   for (const serie of seriesResult) {
     //La función paintSerie retorna un li, al que a añado un listener
     paintSerie(serie, resultsContainer).addEventListener('click', paintFavorites);
@@ -88,21 +89,21 @@ function paintFavorites(ev) {
 
     //ul donde meto cada li que creo con la función paintSerie (devuelve un li)
     const favoritesList = document.querySelector('.js-favorites');
-    favoritesList.classList.remove('series-result');
+    //Creo el botón para eliminar una serie de la lista
     const iconDelete = document.createElement('button');
     iconDelete.innerHTML = 'x';
     iconDelete.classList.add('icon-delete');
+    //Constante que llama a la función paintSerie para pintar la card tipo
     const favoriteCard = paintSerie(serie, favoritesList);
     favoriteCard.appendChild(iconDelete);
     favoriteCard.classList.remove('card');
     favoriteCard.classList.add('favorite-card');
+    favoritesList.classList.remove('series-result');
     favoriteCard.querySelector('img').classList.add('img-favorite');
     iconDelete.addEventListener('click', deleteFavorites);
 
     saveFavoriteSerie(serie);
   }
-
-
 }
 
 

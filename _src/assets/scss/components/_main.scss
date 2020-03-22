@@ -1,6 +1,5 @@
 .organice-content {
   display: flex;
-  justify-content: space-between;
 }
 
 .input-search {
@@ -22,9 +21,9 @@
 
 .series-result {
   display: flex;
+  align-content: flex-start;
   flex-wrap: wrap;
   list-style: none;
-  margin: 0.5rem;
 }
 
 .card {
