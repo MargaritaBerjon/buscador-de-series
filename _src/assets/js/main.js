@@ -2,6 +2,8 @@
 
 const inputSearch = document.querySelector('.js-input-search');
 const buttonSearch = document.querySelector('.js-button-search');
+// ul donde meto cada li de favotitos
+const favoritesList = document.querySelector('.js-favorites');
 
 //Array para guardar resultados de la petición
 let seriesResult = [];
@@ -12,21 +14,20 @@ getFavoritesFromLocalStorage();
 
 //Carga al iniciar la aplicación los favoritos (si los hay)
 function getFavoritesFromLocalStorage() {
-  const favoritesList = document.querySelector('.js-favorites');
   if (JSON.parse(localStorage.getItem('favorites'))) {
     favoriteArr = JSON.parse(localStorage.getItem('favorites'));
     for (const serie of favoriteArr) {
-      const favoriteCard = paintSerie(serie, favoritesList);
-      favoritesList.classList.remove('series-result');
-      favoriteCard.classList.remove('card');
-      favoriteCard.classList.add('favorite-card');
-      favoriteCard.querySelector('img').classList.add('img-favorite');
-      const iconDelete = document.createElement('button');
-      iconDelete.innerHTML = 'x';
-      favoriteCard.appendChild(iconDelete);
-      iconDelete.classList.add('icon-delete');
-
-      iconDelete.addEventListener('click', deleteFavorites);
+      specialStyles(serie);
+      // const favoriteCard = paintSerie(serie, favoritesList);
+      // favoritesList.classList.remove('series-result');
+      // favoriteCard.classList.remove('card');
+      // favoriteCard.classList.add('favorite-card');
+      // favoriteCard.querySelector('img').classList.add('img-favorite');
+      // const iconDelete = document.createElement('button');
+      // iconDelete.innerHTML = 'x';
+      // favoriteCard.appendChild(iconDelete);
+      // iconDelete.classList.add('icon-delete');
+      // iconDelete.addEventListener('click', deleteFavorites);
     }
   }
 }
@@ -96,29 +97,41 @@ function paintFavorites(ev) {
     ev.currentTarget.classList.remove('card');
     ev.currentTarget.classList.add('card-result-favorite');
 
+    // //Creo el botón para eliminar una serie de la lista
+    // const iconDelete = document.createElement('button');
+    // iconDelete.innerHTML = 'x';
+    // iconDelete.classList.add('icon-delete');
+    // //Constante que llama a la función paintSerie para pintar la card tipo
+    // const favoriteCard = paintSerie(serie, favoritesList);
+    // favoriteCard.appendChild(iconDelete);
+    // favoriteCard.classList.remove('card');
+    // favoriteCard.classList.add('favorite-card');
+    // favoritesList.classList.remove('series-result');
+    // favoriteCard.querySelector('img').classList.add('img-favorite');
+    // iconDelete.addEventListener('click', deleteFavorites);
 
-    //ul donde meto cada li que creo con la función paintSerie (devuelve un li)
-    const favoritesList = document.querySelector('.js-favorites');
-    //Creo el botón para eliminar una serie de la lista
-    const iconDelete = document.createElement('button');
-    iconDelete.innerHTML = 'x';
-    iconDelete.classList.add('icon-delete');
-    //Constante que llama a la función paintSerie para pintar la card tipo
-    const favoriteCard = paintSerie(serie, favoritesList);
-    favoriteCard.appendChild(iconDelete);
-    favoriteCard.classList.remove('card');
-    favoriteCard.classList.add('favorite-card');
-    favoritesList.classList.remove('series-result');
-    favoriteCard.querySelector('img').classList.add('img-favorite');
-    iconDelete.addEventListener('click', deleteFavorites);
-
+    specialStyles(serie);
     saveFavoriteSerie(serie);
   }
 }
 
+function specialStyles(serie) {
+  const favoriteCard = paintSerie(serie, favoritesList);
+  favoritesList.classList.remove('series-result');
+  favoriteCard.classList.remove('card');
+  favoriteCard.classList.add('favorite-card');
+  favoriteCard.querySelector('img').classList.add('img-favorite');
+  const iconDelete = document.createElement('button');
+  iconDelete.innerHTML = 'x';
+  favoriteCard.appendChild(iconDelete);
+  iconDelete.classList.add('icon-delete');
+  iconDelete.addEventListener('click', deleteFavorites);
+}
+
+
 
 function deleteFavorites(ev) {
-  const favoritesContainer = document.querySelector('.js-favorites');
+
   const id = ev.currentTarget.parentElement.id;
 
   //eliminar serie del array local(favoriteArr)
@@ -127,7 +140,7 @@ function deleteFavorites(ev) {
   // Sobreescribo el objeto en localStorage
   localStorage.setItem('favorites', JSON.stringify(favoriteArr));
   //para quitar de la vista
-  favoritesContainer.removeChild(ev.currentTarget.parentElement);
+  favoritesList.removeChild(ev.currentTarget.parentElement);
 }
 
 //Guarda los favoritos en: favoritesArr y LocalStorage
@@ -160,9 +173,8 @@ function createButtonRemove() {
 createButtonRemove();
 
 function removeAllFavorites() {
-  const favoritesContainer = document.querySelector('.js-favorites');
   favoriteArr = [];
-  favoritesContainer.innerHTML = '';
+  favoritesList.innerHTML = '';
   localStorage.removeItem('favorites');
 }
 
