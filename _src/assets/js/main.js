@@ -25,8 +25,7 @@ function getFavoritesFromLocalStorage() {
       iconDelete.innerHTML = 'x';
       favoriteCard.appendChild(iconDelete);
       iconDelete.classList.add('icon-delete');
-      // li.classList.remove('card');
-      // li.currentTarget.classList.add('card-result-favorite');
+
       iconDelete.addEventListener('click', deleteFavorites);
     }
   }
@@ -48,8 +47,17 @@ function paintSeries() {
   const resultsContainer = document.querySelector('.js-results-search');
   resultsContainer.innerHTML = '';
   for (const serie of seriesResult) {
-    //La función paintSerie retorna un li, al que a añado un listener
-    paintSerie(serie, resultsContainer).addEventListener('click', paintFavorites);
+    //La función paintSerie retorna un li, (card) al que a añado un listener
+    const card = paintSerie(serie, resultsContainer);
+    card.addEventListener('click', paintFavorites);
+    for (const serieFav of favoriteArr) {
+      if (serie.show.id === serieFav.show.id) {
+        card.classList.add('card-result-favorite', 'js-card');
+      } else {
+        card.classList.add('card', 'js-card');
+      }
+    }
+
   }
 
 }
@@ -68,7 +76,6 @@ function paintSerie(serie, container) {
   }
 
   li.id = serie.show.id;
-  li.classList.add('card', 'js-card');
   li.appendChild(img);
   li.appendChild(title);
   container.appendChild(li);
@@ -88,7 +95,6 @@ function paintFavorites(ev) {
   } else {
     ev.currentTarget.classList.remove('card');
     ev.currentTarget.classList.add('card-result-favorite');
-    console.log(ev.currentTarget);
 
 
     //ul donde meto cada li que creo con la función paintSerie (devuelve un li)
