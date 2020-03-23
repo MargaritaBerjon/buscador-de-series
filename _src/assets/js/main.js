@@ -147,6 +147,7 @@ function removeAllFavorites() {
   favoriteArr = [];
   favoritesList.innerHTML = '';
   localStorage.removeItem('favorites');
+  paintSeries();
   buttonRemoveVisibility();
 }
 
