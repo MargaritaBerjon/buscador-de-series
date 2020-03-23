@@ -25,6 +25,8 @@ function getFavoritesFromLocalStorage() {
       iconDelete.innerHTML = 'x';
       favoriteCard.appendChild(iconDelete);
       iconDelete.classList.add('icon-delete');
+      // li.classList.remove('card');
+      // li.currentTarget.classList.add('card-result-favorite');
       iconDelete.addEventListener('click', deleteFavorites);
     }
   }
@@ -86,6 +88,8 @@ function paintFavorites(ev) {
   } else {
     ev.currentTarget.classList.remove('card');
     ev.currentTarget.classList.add('card-result-favorite');
+    console.log(ev.currentTarget);
+
 
     //ul donde meto cada li que creo con la función paintSerie (devuelve un li)
     const favoritesList = document.querySelector('.js-favorites');
@@ -111,9 +115,12 @@ function deleteFavorites(ev) {
   const favoritesContainer = document.querySelector('.js-favorites');
   const id = ev.currentTarget.parentElement.id;
 
+  //eliminar serie del array local(favoriteArr)
   const serie = findSerie(id, favoriteArr);
-  favoriteArr.splice(favoriteArr.indexOf(serie));
+  favoriteArr.splice(favoriteArr.indexOf(serie), 1);
+  // Sobreescribo el objeto en localStorage
   localStorage.setItem('favorites', JSON.stringify(favoriteArr));
+  //para quitar de la vista
   favoritesContainer.removeChild(ev.currentTarget.parentElement);
 }
 
