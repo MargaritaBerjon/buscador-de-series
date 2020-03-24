@@ -114,7 +114,10 @@ function paintFavoriteSerie(serie) {
   favoriteCard.classList.remove('card');
   favoriteCard.classList.add('favorite-card');
   favoriteCard.querySelector('img').classList.add('img-favorite');
-  favoriteCard.removeChild(favoriteCard.childNodes[2]);
+  const gender = 2;
+  favoriteCard.removeChild(favoriteCard.childNodes[gender]);
+  // Lo mismo que lo de arriba.
+  // favoriteCard.removeChild(favoriteCard.childNodes[2]);
   //Add x icon
   const iconDelete = document.createElement('button');
   iconDelete.innerHTML = 'x';
