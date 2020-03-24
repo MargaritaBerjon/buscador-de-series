@@ -54,7 +54,9 @@ function paintSerie(serie, container) {
   const li = document.createElement('li');
   const img = document.createElement('img');
   const title = document.createElement('p');
+  const gender = document.createElement('p');
   title.innerHTML = serie.show.name;
+  gender.innerHTML = serie.show.genres;
   if (serie.show.image !== null) {
     img.src = serie.show.image.medium;
   } else {
@@ -63,6 +65,7 @@ function paintSerie(serie, container) {
   li.id = serie.show.id;
   li.appendChild(img);
   li.appendChild(title);
+  li.appendChild(gender);
   li.classList.add('card', 'js-card');
   container.appendChild(li);
   container.classList.add('series-result');
@@ -88,7 +91,8 @@ function removeFavorite(ev) {
   const id = ev.currentTarget.parentElement.id;
   //eliminar serie del array local(favoriteArr)
   const serie = findSerie(id, favoriteArr);
-  favoriteArr.splice(favoriteArr.indexOf(serie), 1);
+  const seriePosition = favoriteArr.indexOf(serie);
+  favoriteArr.splice(seriePosition, 1);
   // Sobreescribo el objeto en localStorage
   localStorage.setItem('favorites', JSON.stringify(favoriteArr));
   //para quitar de la vista
@@ -110,6 +114,7 @@ function paintFavoriteSerie(serie) {
   favoriteCard.classList.remove('card');
   favoriteCard.classList.add('favorite-card');
   favoriteCard.querySelector('img').classList.add('img-favorite');
+  favoriteCard.removeChild(favoriteCard.childNodes[2]);
   //Add x icon
   const iconDelete = document.createElement('button');
   iconDelete.innerHTML = 'x';
@@ -119,10 +124,10 @@ function paintFavoriteSerie(serie) {
 }
 
 //Esta función sirve para encontrar la serie a través del id
-function findSerie(id, seriesResult) {
+function findSerie(id, arr) {
   //El id que devuelve es un string, por eso parseInt
   id = parseInt(id);
-  return seriesResult.find(serie => serie.show.id === id);
+  return arr.find(serie => serie.show.id === id);
 }
 
 function buttonRemoveVisibility() {
