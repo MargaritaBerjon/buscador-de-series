@@ -1,5 +1,6 @@
 'use strict';
 const inputSearch = document.querySelector('.js-input-search');
+let recomendedLanguage = ['English', 'Spanish', 'Portuguese'];
 const buttonSearch = document.querySelector('.js-button-search');
 // ul donde meto cada li de favotitos
 const favoritesList = document.querySelector('.js-favorites');
@@ -54,15 +55,25 @@ function paintSerie(serie, container) {
   const li = document.createElement('li');
   const img = document.createElement('img');
   const title = document.createElement('p');
+  const language = document.createElement('p');
   title.innerHTML = serie.show.name;
+  language.innerHTML = serie.show.language;
   if (serie.show.image !== null) {
     img.src = serie.show.image.medium;
   } else {
     img.src = 'https://via.placeholder.com/210x295/ffffff/666666/?';
   }
+
   li.id = serie.show.id;
   li.appendChild(img);
   li.appendChild(title);
+  li.appendChild(language);
+  if (recomendedLanguage.includes(serie.show.language)) {
+    const recomended = document.createElement('p');
+    recomended.innerHTML = 'Recomendado';
+    li.appendChild(recomended);
+  }
+
   li.classList.add('card', 'js-card');
   container.appendChild(li);
   container.classList.add('series-result');
@@ -151,4 +162,12 @@ function removeAllFavorites() {
   buttonRemoveVisibility();
 }
 
+let logButton = document.querySelector('.js-log-button');
+
+function numberOfFavorites() {
+  console.log(favoriteArr.length);
+}
+
+
+logButton.addEventListener('click', numberOfFavorites);
 buttonSearch.addEventListener('click', callSeriesResult);
