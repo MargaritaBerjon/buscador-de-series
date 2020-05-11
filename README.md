@@ -1,1 +1,1 @@
-# Buscador de series desarrollado con JAvaScrip
+# Buscador de series desarrollado con JavaScrip
