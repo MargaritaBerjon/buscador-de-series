@@ -28,7 +28,7 @@ function getFavoritesFromLocalStorage() {
 function callSeriesResult(ev) {
   ev.preventDefault();
   const userSearch = inputSearch.value.toLowerCase();
-  fetch(`http://api.tvmaze.com/search/shows?q=${userSearch}`)
+  fetch(`https://api.tvmaze.com/search/shows?q=${userSearch}`)
     .then(response => response.json())
     .then(data => {
       seriesResult = data;
@@ -162,12 +162,6 @@ function removeAllFavorites() {
   buttonRemoveVisibility();
 }
 
-let logButton = document.querySelector('.js-log-button');
-
-function numberOfFavorites() {
-  console.log(favoriteArr.length);
-}
 
 
-logButton.addEventListener('click', numberOfFavorites);
 buttonSearch.addEventListener('click', callSeriesResult);
