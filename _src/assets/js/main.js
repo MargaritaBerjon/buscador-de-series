@@ -162,6 +162,12 @@ function removeAllFavorites() {
   buttonRemoveVisibility();
 }
 
+let logButton = document.querySelector('.js-log-button');
+
+function numberOfFavorites() {
+  console.log(favoriteArr.length);
+}
 
 
+logButton.addEventListener('click', numberOfFavorites);
 buttonSearch.addEventListener('click', callSeriesResult);
